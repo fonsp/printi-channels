@@ -67,12 +67,12 @@
 			color: white;
 			/* white-space: nowrap; */
 			/*font-weight: normal;*/
-			font-family: monospace;
+			font-family: 'Fira Mono', monospace;
 		}
 
 		#logocontainer {
 			margin: 0 auto;
-			width: 250px;
+			max-width: 333px;
 			padding-top: 20px;
 			padding-bottom: 0px;
 			align-content: center;
@@ -397,7 +397,7 @@
 					return "⋅"
 				},
 				theme: "base16-dark",
-				viewportMargin: 20,
+				viewportMargin: Infinity,
 			});
 
 			editor.setValue("Loading...");
