@@ -16,5 +16,5 @@ Have fun, and let me know what you think!
 
 -[fonsi](https://github.com/fonsp)
 
-<img src="https://channels.printi.me/img/good_morning.png" width=320 >
-<img src="https://channels.printi.me/img/rover.png" width=250 >
+![example1](/img/good_morning.png?raw=true)
+![example2](/img/rover.png?raw=true)
