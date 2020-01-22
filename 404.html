@@ -364,6 +364,10 @@
 			var channelName = "UNKNOWN";
 
 			var givenUrl = new URL(document.location);
+
+			if(givenUrl.pathname.startsWith("/view")){
+				document.location = "/view?" + givenUrl.pathname.substring(6)
+			}
 			if (givenUrl.search == "") {
 				channelName = givenUrl.pathname.substring(1)
 			} else {

@@ -95,11 +95,11 @@
 					window.preview(doc.data().script);
 				} else {
 					console.log("🙊 Channel does not exist!");
-					window.preview("Channel not found...")
+					window.preview("Channel not found 😥")
 				}
 			}).catch(function(error) {
 				console.log("🚨 Error getting document:", error);
-				window.preview("Could not connect to database:" + error)
+				window.preview("Could not connect to database 🚨\n" + error)
 			});
 		});
 	</script>
