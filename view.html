@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta name="viewport" content="width=device-width, user-scalable=no" />
+	<title>printi</title>
+	<meta charset="utf-8" />
+	<script>
+		console.log("printi channels, by Fons van der Plas (http://github.com/fonsp) 🌈");
+	</script>
+	<meta name="author" content="Fons van der Plas" />
+	<link rel="author" href="https://github.com/fonsp" />
+	<link rel="license" href="https://github.com/fonsp/printi/blob/master/LICENSE" />
+	<meta name="theme-color" content="#FFEFEF" />
+	<meta name="description" content="printi channel viewer" />
+	<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>
+
+	<style>
+		#channeltitlecontainer {
+			font-family: monospace;
+			font-weight: bold;
+			width: 100%;
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="channeltitlecontainer">
+		<h1 id="channeltitle"></h1>
+	</div>
+
+	<iframe id="screen"></iframe>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+
+			var channelName = "UNKNOWN";
+
+			var givenUrl = new URL(document.location);
+			if (givenUrl.search == "") {
+				channelName = givenUrl.pathname.substring(1)
+			} else {
+				channelName = givenUrl.search.substring(1);
+				try {
+					window.history.replaceState(null, channelName, "/view/" + channelName)
+				} catch (err) {
+					console.log("failed to set URL:")
+					console.log(err)
+				}
+			}
+			document.querySelector("h1").innerText = "/" + channelName;
+
+			// Initialize Cloud Firestore through Firebase
+			firebase.initializeApp({
+				apiKey: 'AIzaSyBh74cA6F-onWicP-RYiaHw3RvnSf8i5cc',
+				authDomain: 'localhost',
+				projectId: 'printi-channels',
+			});
+
+			var db = firebase.firestore();
+			window.db = db;
+
+
+			// var screen = document.querySelector("#screen")
+
+			window.preview = function(value) {
+
+				// var tempFn = doT.template(editor.getValue());
+				// var resultText = tempFn({
+				// 	foo: 'with doT'
+				// });
+				// var displaySource = resultText.replace("\n","\r\n")
+
+
+				//console.log(displaySource)
+
+				// screen.src = "about:blank"
+				// screen.contentWindow.document.open()
+				// screen.contentWindow.document.write(value)
+				// screen.contentWindow.document.close()
+
+				document.open();
+				document.write(value);
+				document.close();
+			};
+
+
+			var docRef = db.collection("channels").doc(channelName);
+
+			docRef.get().then(function(doc) {
+				if (doc.exists) {
+					console.log("🐔 Channel exists!");
+					window.preview(doc.data().script);
+				} else {
+					console.log("🙊 Channel does not exist!");
+					window.preview("Channel not found...")
+				}
+			}).catch(function(error) {
+				console.log("🚨 Error getting document:", error);
+				window.preview("Could not connect to database:" + error)
+			});
+		});
+	</script>
+</body>
+
+</html>
