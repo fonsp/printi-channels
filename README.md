@@ -12,6 +12,8 @@ Because _channels_ are HTML documents, they can use scripts! For a basic example
 ### Anyone can write!
 To start a new channel, you just pick a [channels.printi.me/cool-channel-name](https://channels.printi.me/cool-channel-name) and start writing! Using the preview, you can see exactly how your script will be printed in the morning.
 
+New to programming? The basics are not that hard! Have a look at the awesome [guides on HMTL, CSS and Javascript](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web) by Mozilla, and try it out in a playground channel.
+
 Have fun, and let me know what you think!
 
 -[fonsi](https://github.com/fonsp)
