@@ -2,20 +2,23 @@ import subprocess
 import printipigeon as pp
 from pathlib import Path
 import random
+from trim import trim_file
 
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 
 
-legals = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321_-"
+legals = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321"
 
 
 def printHTML(contents, recipients, verbose=True):
 	legalid = "".join(random.choice(legals) for _ in range(64))
-	with open(legalid+".html", "w") as f:
+	filename = legalid + ".html"
+	filepath = "/root/mail/" + filename
+	with open(filepath, "w") as f:
 		f.write(contents)
-	printURL("http://localhost:1234/" + legalid+".html", recipients, verbose)
+	printURL("http://localhost:1234/" + filename, recipients, verbose)
 
 
 def printURL(url, recipients, verbose=True):
@@ -26,6 +29,7 @@ def printURL(url, recipients, verbose=True):
 
 	p("Sending " + url + " to: [" + ", ".join(recipients) + "]")
 	legalid = "".join(random.choice(legals) for _ in range(64))
+	path_prefix = "/root/mail/" + legalid
 
 	if not recipients:
 		p("ERROR: no printi recipients")
@@ -34,13 +38,18 @@ def printURL(url, recipients, verbose=True):
 	width = lambda r: 576 if r == "printi" else 384
 
 	for w in set(width(r) for r in recipients):
-		p(subprocess.check_output("firefox --screenshot \"" + legalid + str(w) + ".png\" \"" + url + "\" --window-size=" + str(w), shell=True))
-	p("website rendered to png!\nsending pigeons...")
+		filepath = path_prefix + str(w) + ".png"
+		p(subprocess.check_output("firefox --screenshot \"" + filepath + "\" \"" + url + "\" --window-size=" + str(w), shell=True))
+		if trim_file(filepath) == "all white":
+			print("a render turned out empty, aborting")
+			return "all white"
+
+	p("website rendered to png!")
 
 	for i, recipient in enumerate(recipients):
 		p("({} of {}) sending to printi.me/{}".format(i+1, len(recipients), recipient))
 
-		pp.send_from_path(legalid + str(width(recipient)) + ".png", recipient)
+		pp.send_from_path(path_prefix + str(width(recipient)) + ".png", recipient)
 		p(" ~~ !done! ~~ ")
 	return "OK!"
 
@@ -60,7 +69,7 @@ def print_all_channels():
 		channel_name = doc.id
 		channel_script = doc_dict["script"]
 		# We prepend an iframe that loads very slowly to allow the script to finish any long-lasting requests
-		channel_script = "<iframe src=\"http://slowwly.robertomurray.co.uk/delay/5000/url/https://api.printi.me/\" width=0 height=0 style=\"display: none;\" ></iframe>\n" + channel_script
+		channel_script = "<iframe src=\"http://slowwly.robertomurray.co.uk/delay/10000/url/https://api.printi.me/\" width=0 height=0 style=\"display: none;\" ></iframe>\n" + channel_script
 
 		# printURL("https://channels.printi.me/view?" + channel_name, doc_dict["subscribers"])
 		printHTML(channel_script, doc_dict["subscribers"])
