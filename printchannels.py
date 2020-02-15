@@ -2,7 +2,7 @@ import subprocess
 import printipigeon as pp
 from pathlib import Path
 import random
-from trim import trim_file
+from trim import trim_file, trim_and_name_file
 
 import firebase_admin
 from firebase_admin import credentials
@@ -12,16 +12,16 @@ from firebase_admin import firestore
 legals = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321"
 
 
-def printHTML(contents, recipients, verbose=True):
+def printHTML(contents, recipients, channel_name=None, verbose=True):
 	legalid = "".join(random.choice(legals) for _ in range(64))
 	filename = legalid + ".html"
 	filepath = "/root/mail/" + filename
 	with open(filepath, "w") as f:
 		f.write(contents)
-	printURL("http://localhost:1234/" + filename, recipients, verbose)
+	printURL("http://localhost:1234/" + filename, recipients, channel_name, verbose)
 
 
-def printURL(url, recipients, verbose=True):
+def printURL(url, recipients, channel_name=None, verbose=True):
 	def gobble(*a,**b):
 		return
 
@@ -40,7 +40,8 @@ def printURL(url, recipients, verbose=True):
 	for w in set(width(r) for r in recipients):
 		filepath = path_prefix + str(w) + ".png"
 		p(subprocess.check_output("firefox --screenshot \"" + filepath + "\" \"" + url + "\" --window-size=" + str(w), shell=True))
-		if trim_file(filepath) == "all white":
+		trim_result = trim_and_name_file(filepath, channel_name, w) if channel_name else trim_file(filepath)
+		if trim_result == "all white":
 			print("a render turned out empty, aborting")
 			return "all white"
 
@@ -72,7 +73,7 @@ def print_all_channels():
 		channel_script = "<iframe src=\"http://slowwly.robertomurray.co.uk/delay/10000/url/https://api.printi.me/\" width=0 height=0 style=\"display: none;\" ></iframe>\n" + channel_script
 
 		# printURL("https://channels.printi.me/view?" + channel_name, doc_dict["subscribers"])
-		printHTML(channel_script, doc_dict["subscribers"])
+		printHTML(channel_script, doc_dict["subscribers"], channel_name)
 
 
 if __name__ == "__main__":
