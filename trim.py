@@ -38,4 +38,4 @@ def trim_and_name_file(path, channel_name, width):
         draw.text(((width - 10*len(line)) // 2, 10 + 16 + 10 + 16*h), line, fill="black", font=font)
 
     new_im.paste(im_cropped, (0, 10 + 16 + 10 + 16 * len(chopped) + 20))
-    new_im.save("as"+path)
+    new_im.save(path)
