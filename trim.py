@@ -25,7 +25,7 @@ def trim_and_name_file(path, channel_name, width):
     w = width // 10 # 10 is the character width for our font at size 16
     chopped = [c_title[start:start + w] for start in range(0, len(c_title), w)]
 
-    new_im = Image.new("L", (width, 10 + 16 + 10 + 16 * len(chopped) + 20 + bbox[3]), color="white")
+    new_im = Image.new("L", (width, 10 + 16 + 10 + 16 * len(chopped) + 20 + im_cropped.height), color="white")
     draw = ImageDraw.Draw(new_im)
 
     font = ImageFont.truetype("RobotoMono-MediumItalic.ttf", 16)
