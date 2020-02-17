@@ -1,8 +1,12 @@
 # Welcome to _printi channels_
 
-> A place where anyone can create a page to be printed every morning.
+<img src="https://i.imgur.com/4LZZmbr.jpg" width="400" alt="picture of some printi channels" >
 
-_A better introduction is coming soon!_
+A **[printi](https://printi.me) channel** is a document that gets printi'ed every morning, to all the printis that subscribe to that channel. _Anyone can create, edit and subscribe to a channel._ 👪
+
+> Why would I want the same document printi'ed every morning?
+
+Printi channels are _HTML web pages_: ✨ they can contain text, images, VIDEOS (haha no it's paper), and with JavaScript, they can **show something new every morning**!
 
 ### Examples
 Head over to [/good_morning](https://channels.printi.me/good_morning) to have a look at the first channel!
