@@ -22,5 +22,5 @@ Have fun, and let me know what you think!
 
 -[fonsi](https://github.com/fonsp)
 
-![example1](/img/good_morning.png?raw=true)
-![example2](/img/rover.png?raw=true)
+<img src="/img/good_morning.png?raw=true" alt="/good_morning channel screenshot" width="500" >
+<img src="/img/rover.png?raw=true" alt="/curiosity_diaries channel screenshot" width="500" >
